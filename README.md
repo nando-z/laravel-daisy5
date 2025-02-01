@@ -16,7 +16,7 @@ Laravel Daisy5 is a UI package for the Laravel framework. It integrates DaisyUI 
 
 1. Install the package via Composer:
     ```bash
-    composer require yourusername/laravel-daisy5
+    composer require nando-z/laravel-daisy5
     ```
 2. Publish the package configuration (if any):
     ```bash
