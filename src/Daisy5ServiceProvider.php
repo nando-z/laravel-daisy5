@@ -11,7 +11,6 @@ class Daisy5ServiceProvider extends ServiceProvider
         $this->app->bind('daisy5', function () {
             return new Daisy5();
         });
-        // Register any application services.
     }
 
     public function boot()
@@ -21,6 +20,5 @@ class Daisy5ServiceProvider extends ServiceProvider
                 InstallCommand::class,
             ]);
         }
-        // Bootstrap any application services.
     }
 }
