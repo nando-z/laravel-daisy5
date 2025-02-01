@@ -1,0 +1,29 @@
+{
+    "name": "nando-z/laravel-daisy5",
+    "description": "Install DaisyUI 5 with Tailwind CSS 4 and TermWind for Laravel",
+    "type": "laravel-package",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^10.0",
+        "nunomaduro/termwind": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "NandoZ\\Daisy5\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NandoZ\\Daisy5\\Daisy5ServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "Ahmed Khalid",
+            "email": "157473093+nando-z@users.noreply.github.com"
+        }
+    ]
+}
