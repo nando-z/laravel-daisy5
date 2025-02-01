@@ -1,5 +1,9 @@
 <?php
 
+namespace NandoZ\Daisy5;
+
+use Illuminate\Support\ServiceProvider;
+
 class Daisy5ServiceProvider extends ServiceProvider
 {
     public function register()
@@ -9,6 +13,7 @@ class Daisy5ServiceProvider extends ServiceProvider
         });
         // Register any application services.
     }
+
     public function boot()
     {
         if ($this->app->runningInConsole()) {
@@ -17,6 +22,5 @@ class Daisy5ServiceProvider extends ServiceProvider
             ]);
         }
         // Bootstrap any application services.
-    }   
-    
+    }
 }
