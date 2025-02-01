@@ -5,68 +5,76 @@ namespace NandoZ\Daisy5\Console;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Termwind\Termwind;
+use Figlet\Figlet;
 
 class InstallCommand extends Command
 {
     protected $signature = 'daisy5:install';
-    protected $description = 'Install DaisyUI 5 with Tailwind CSS 4 and TermWind';
+    protected $description = 'Install DaisyUI 5 with Tailwind CSS 4 For Laravel 11';
 
     public function handle()
     {
+        // Display the FIGlet banner
+        $this->displayBanner();
+
         // Initialize TermWind
         Termwind::renderUsing($this->output);
 
         // Delete existing Tailwind config
         if (File::exists(base_path('tailwind.config.js'))) {
             File::delete(base_path('tailwind.config.js'));
-            $this->renderSuccess('Deleted existing tailwind.config.js');
         }
 
         // Update package.json
         $this->updateNodePackages();
-        $this->renderSuccess('Updated package.json with required dependencies');
 
         // Scaffold files
         $this->scaffoldFiles();
-        $this->renderSuccess('Scaffolded app.css and vite.config.js');
 
-        // Final message
-        $this->renderInfo('Daisy5 installed successfully!');
-        $this->renderComment('Run: npm install && npm run build');
+        // Render success message
+        $this->renderSuccess('DaisyUI 5 installation complete.');
+    }
+
+    /**
+     * Display the FIGlet banner using povils/figlet with a background color.
+     */
+    protected function displayBanner()
+    {
+        $figlet = new Figlet();
+        $this->output->writeln($figlet->render('DaisyUI 5'));
     }
 
     protected function updateNodePackages()
     {
         $packages = [
-            'tailwindcss' => '^4.0.0',
-            '@tailwindcss/vite' => '^0.2.0',
-            '@tailwindcss/postcss' => '^0.0.0',
-            'postcss' => '^8.4.0',
-            'daisyui' => '^5.0.0'
+            "daisyui" => "^5.0.0",
+            "tailwindcss" => "^4.0.0"
         ];
 
-        File::put(
-            base_path('package.json'),
-            json_encode($this->mergePackageConfig($packages), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
-        );
+        $this->mergePackageConfig($packages);
     }
 
     protected function mergePackageConfig($packages)
     {
-        $packageJson = File::exists(base_path('package.json'))
-            ? json_decode(File::get(base_path('package.json')), true)
-            : ['devDependencies' => []];
+        $packageJsonPath = base_path('package.json');
+        $packageJson = json_decode(file_get_contents($packageJsonPath), true);
 
-        return array_merge_recursive($packageJson, [
-            'devDependencies' => $packages
-        ]);
+        $packageJson['dependencies'] = array_merge(
+            $packageJson['dependencies'] ?? [],
+            $packages
+        );
+
+        file_put_contents(
+            $packageJsonPath,
+            json_encode($packageJson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+        );
     }
 
     protected function scaffoldFiles()
     {
-        File::ensureDirectoryExists(resource_path('css'));
-        File::copy(__DIR__.'/../../../resources/stubs/app.css', resource_path('css/app.css'));
-        File::copy(__DIR__.'/../../../resources/stubs/vite.config.js', base_path('vite.config.js'));
+        // Scaffold necessary files for DaisyUI and TailwindCSS
+        File::put(base_path('tailwind.config.js'), "module.exports = { content: ['./resources/**/*.blade.php', './resources/**/*.js', './resources/**/*.vue'], theme: { extend: {}, }, plugins: [require('daisyui')], }");
+        File::put(base_path('resources/css/app.css'), "@tailwind base; @tailwind components; @tailwind utilities;");
     }
 
     /**
@@ -74,9 +82,7 @@ class InstallCommand extends Command
      */
     protected function renderSuccess(string $message)
     {
-        Termwind::render(<<<HTML
-            <div class="px-2 py-1 bg-green-600 text-white">✔ {$message}</div>
-        HTML);
+        $this->output->success($message);
     }
 
     /**
@@ -84,9 +90,7 @@ class InstallCommand extends Command
      */
     protected function renderInfo(string $message)
     {
-        Termwind::render(<<<HTML
-            <div class="px-2 py-1 bg-blue-600 text-white">ℹ {$message}</div>
-        HTML);
+        $this->output->info($message);
     }
 
     /**
@@ -94,8 +98,7 @@ class InstallCommand extends Command
      */
     protected function renderComment(string $message)
     {
-        Termwind::render(<<<HTML
-            <div class="px-2 py-1 bg-yellow-600 text-white">➤ {$message}</div>
-        HTML);
+        $this->output->comment($message);
     }
 }
+
