@@ -1,8 +1,9 @@
 {
     "name": "nando-z/laravel-daisy5",
-    "description": "Install DaisyUI 5 with Tailwind CSS 4 and TermWind for Laravel",
+    "description": "Install DaisyUI 5 with Tailwind CSS 4  for Laravel",
     "type": "laravel-package",
     "license": "MIT",
+    "version": "1.0.0",
     "require": {
         "php": "^8.1",
         "laravel/framework": "^11.41",
