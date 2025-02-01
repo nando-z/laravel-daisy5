@@ -27,5 +27,7 @@
             "name": "Ahmed Khalid",
             "email": "157473093+nando-z@users.noreply.github.com"
         }
-    ]
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
